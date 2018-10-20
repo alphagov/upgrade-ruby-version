@@ -66,19 +66,21 @@ class VersionUpgrader:
         self.old_version = old_version
         self.new_version = new_version
         self.github = Github(os.environ['GITHUB_ACCESS_TOKEN'])
-        self.branch_name = 'ruby-{v}'.format(v=self.new_version.replace('.', '-'))
+        self.branch_name = f'ruby-{self.new_version}'.replace('.', '-')
 
     def can_repo_be_upgraded(self, repo):
         try:
-            branch = repo.get_branch(self.branch_name)
+            repo.get_branch(self.branch_name)
         except GithubException:
             pass
         else:
             print('Already upgraded!')
-            return False # already upgraded
+            return False  # already upgraded
 
         current_version_file = repo.get_contents('.ruby-version')
-        current_version = base64.b64decode(current_version_file.content).decode('UTF-8').strip()
+        current_version = base64.b64decode(current_version_file.content) \
+            .decode('UTF-8').strip()
+
         if not current_version.startswith(self.old_version):
             print(f'Not running {self.old_version}!')
             return False
@@ -91,7 +93,8 @@ class VersionUpgrader:
         master = repo.get_branch('master')
 
         try:
-            repo.create_git_ref(ref=f'refs/heads/{self.branch_name}', sha=master.commit.sha)
+            ref = f'refs/heads/{self.branch_name}'
+            repo.create_git_ref(ref=ref, sha=master.commit.sha)
         except GithubException:
             pass
 
@@ -116,7 +119,8 @@ class VersionUpgrader:
             return  # doesn't have a Dockerfile
 
         sha = existing_file.sha
-        existing_content = base64.b64decode(existing_file.content).decode('UTF-8').strip()
+        existing_content = base64.b64decode(existing_file.content) \
+            .decode('UTF-8').strip()
 
         content = existing_content.split('\n')
         content[0] = f'FROM ruby:{self.new_version}'
@@ -130,7 +134,9 @@ class VersionUpgrader:
         print('Raising PR')
 
         title = f'Upgrade Ruby to {self.new_version}'
-        body = 'https://trello.com/c/Sck93ByH/37-ruby-security-vulnerability-244'
+        body = f'''
+            Upgrade Ruby to {self.new_version}, see commits for more details.
+        '''.strip()
         repo.create_pull(title, body, base='master', head=self.branch_name)
 
     def upgrade(self, repo_name):

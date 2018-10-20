@@ -188,7 +188,12 @@ class VersionUpgrader:
         self.raise_upgrade_pr(repo)
 
 
-if __name__ == '__main__':
-    upgrader = VersionUpgrader('2.4', '2.4.4')
+def upgrade(old_version, new_version):
+    upgrader = VersionUpgrader(old_version, new_version)
     for repo in repos:
         upgrader.upgrade(repo)
+
+
+if __name__ == '__main__':
+    upgrade('2.4', '2.4.5p335')
+    upgrade('2.5', '2.5.3p105')

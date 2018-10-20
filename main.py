@@ -64,7 +64,10 @@ class VersionUpgrader:
 
     def __init__(self, old_version, new_version):
         self.old_version = old_version
-        self.new_version = new_version
+
+        self.new_version_full = new_version
+        self.new_version = new_version.split('p')[0]
+
         self.github = Github(os.environ['GITHUB_ACCESS_TOKEN'])
         self.branch_name = f'ruby-{self.new_version}'.replace('.', '-')
 
@@ -130,6 +133,37 @@ class VersionUpgrader:
 
         repo.update_file(filename, message, content, sha, self.branch_name)
 
+    def upgrade_gemfile_lock(self, repo):
+        print('Updating Gemfile.lock')
+
+        filename = '/Gemfile.lock'
+
+        try:
+            existing_file = repo.get_contents(filename)
+        except GithubException:
+            return  # doesn't have a Dockerfile
+
+        sha = existing_file.sha
+        existing_content = base64.b64decode(existing_file.content) \
+            .decode('UTF-8').strip()
+
+        content = existing_content.split('\n')
+        version_line = None
+
+        for i, line in enumerate(content):
+            if line.strip() == 'RUBY VERSION':
+                version_line = i + 1
+                break
+        else:
+            return  # RUBY VERSION not in the Gemfile.lock
+
+        content[version_line] = f'   ruby {self.new_version_full}'
+        content = '\n'.join(content) + '\n'
+
+        message = f'Update Gemfile.lock to {self.new_version}'
+
+        repo.update_file(filename, message, content, sha, self.branch_name)
+
     def raise_upgrade_pr(self, repo):
         print('Raising PR')
 
@@ -150,6 +184,7 @@ class VersionUpgrader:
         self.create_branch(repo)
         self.upgrade_ruby_version(repo)
         self.upgrade_dockerfile(repo)
+        self.upgrade_gemfile_lock(repo)
         self.raise_upgrade_pr(repo)
 
 

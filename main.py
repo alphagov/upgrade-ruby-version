@@ -44,7 +44,6 @@ repos = [
     'alphagov/manuals-publisher',
     'alphagov/maslow',
     'alphagov/organisations-publisher',
-    'alphagov/policy-publisher',
     'alphagov/publisher',
     'alphagov/publishing-api',
     'alphagov/release',

@@ -28,6 +28,7 @@ repos = [
     'alphagov/frontend',
     'alphagov/gds-api-adapters',
     'alphagov/government-frontend',
+    'alphagov/govspeak-preview',
     'alphagov/govuk-aws',
     'alphagov/govuk-content-schema-test-helpers',
     'alphagov/govuk-content-schemas',

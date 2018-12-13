@@ -31,6 +31,7 @@ repos = [
     'alphagov/govuk-aws',
     'alphagov/govuk-content-schema-test-helpers',
     'alphagov/govuk-content-schemas',
+    'alphagov/govuk-docs-monitor',
     'alphagov/govuk-dns',
     'alphagov/govuk-puppet',
     'alphagov/govuk_publishing_components',

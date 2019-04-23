@@ -52,7 +52,6 @@ repos = [
     'alphagov/publishing-e2e-tests',
     'alphagov/release',
     'alphagov/router-api',
-    'alphagov/rummager',
     'alphagov/search-admin',
     'alphagov/search-api',
     'alphagov/service-manual-frontend',

@@ -30,6 +30,7 @@ repos = [
     'alphagov/gds-api-adapters',
     'alphagov/government-frontend',
     'alphagov/govspeak-preview',
+    'alphagov/govuk-alert-tracker',
     'alphagov/govuk-app-deployment',
     'alphagov/govuk-aws',
     'alphagov/govuk-content-schemas',
@@ -207,4 +208,5 @@ def upgrade(old_version, new_version):
 
 
 if __name__ == '__main__':
+    upgrade('2.5', '2.6.3p62')
     upgrade('2.6', '2.6.3p62')

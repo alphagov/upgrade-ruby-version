@@ -40,6 +40,7 @@ repos = [
     'alphagov/govuk-puppet',
     'alphagov/govuk_publishing_components',
     'alphagov/govuk-saas-config',
+    'alphagov/govuk-zendesk-display-screen',
     'alphagov/hmrc-manuals-api',
     'alphagov/imminence',
     'alphagov/info-frontend',

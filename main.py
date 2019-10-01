@@ -210,4 +210,5 @@ def upgrade(old_version, new_version):
 
 
 if __name__ == '__main__':
+    upgrade('2.5', '2.6.5p114')
     upgrade('2.6', '2.6.5p114')

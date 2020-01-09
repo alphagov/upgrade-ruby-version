@@ -21,6 +21,8 @@ repos = [
     'alphagov/content-publisher',
     'alphagov/content-store',
     'alphagov/content-tagger',
+    'alphagov/datagovuk_find',
+    'alphagov/datagovuk_publish',
     'alphagov/email-alert-api',
     'alphagov/email-alert-frontend',
     'alphagov/email-alert-service',

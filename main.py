@@ -38,7 +38,6 @@ repos = [
     'alphagov/govuk-dns',
     'alphagov/govuk-docker',
     'alphagov/govuk-secrets',
-    'alphagov/govuk-puppet',
     'alphagov/govuk_publishing_components',
     'alphagov/govuk-saas-config',
     'alphagov/govuk-zendesk-display-screen',

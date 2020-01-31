@@ -15,7 +15,6 @@ repos = [
     'alphagov/collections',
     'alphagov/collections-publisher',
     'alphagov/contacts-admin',
-    'alphagov/content-audit-tool',
     'alphagov/content-data-admin',
     'alphagov/content-data-api',
     'alphagov/content-publisher',

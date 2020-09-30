@@ -214,4 +214,4 @@ def upgrade(old_version, new_version):
 
 
 if __name__ == '__main__':
-    upgrade('2.6', '2.7.0p0')
+    upgrade('2.6', '2.7.1p83')

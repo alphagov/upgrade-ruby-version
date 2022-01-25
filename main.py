@@ -123,7 +123,7 @@ class VersionUpgrader:
     def upgrade_ruby_version(self, repo):
         print('Updating .ruby-version file')
 
-        filename = '/.ruby-version'
+        filename = '.ruby-version'
         message = f'Update .ruby-version to {self.new_version}'
         content = f'{self.new_version}\n'
         sha = repo.get_contents(filename).sha
@@ -133,7 +133,7 @@ class VersionUpgrader:
     def upgrade_dockerfile(self, repo):
         print('Updating Dockerfile')
 
-        filename = '/Dockerfile'
+        filename = 'Dockerfile'
 
         try:
             existing_file = repo.get_contents(filename)
@@ -155,7 +155,7 @@ class VersionUpgrader:
     def upgrade_gemfile_lock(self, repo):
         print('Updating Gemfile.lock')
 
-        filename = '/Gemfile.lock'
+        filename = 'Gemfile.lock'
 
         try:
             existing_file = repo.get_contents(filename)

@@ -112,11 +112,11 @@ class VersionUpgrader:
     def create_branch(self, repo):
         print('Creating branch')
 
-        master = repo.get_branch('master')
+        main_branch = repo.get_branch(repo.default_branch)
 
         try:
             ref = f'refs/heads/{self.branch_name}'
-            repo.create_git_ref(ref=ref, sha=master.commit.sha)
+            repo.create_git_ref(ref=ref, sha=main_branch.commit.sha)
         except GithubException:
             pass
 
@@ -190,7 +190,7 @@ class VersionUpgrader:
         body = f'''
             Upgrade Ruby to {self.new_version}, see commits for more details.
         '''.strip()
-        repo.create_pull(title, body, base='master', head=self.branch_name)
+        repo.create_pull(title, body, base=repo.default_branch, head=self.branch_name)
 
     def upgrade(self, repo_name):
         print('Upgrading', repo_name, 'to', self.new_version)

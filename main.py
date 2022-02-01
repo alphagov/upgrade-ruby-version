@@ -213,7 +213,8 @@ class VersionUpgrader:
 
         title = f'Upgrade Ruby to {self.new_version}'
         body = f'''
-            Upgrade Ruby to {self.new_version}, see commits for more details.
+            Upgrades Ruby to {self.new_version}. See commits for more details.
+            This PR should be tested before merge, as per https://docs.publishing.service.gov.uk/manual/ruby.html#update-ruby-version-in-the-relevant-repos.
         '''.strip()
         repo.create_pull(title, body, base=repo.default_branch, head=self.branch_name)
 

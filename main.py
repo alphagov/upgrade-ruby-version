@@ -5,13 +5,13 @@ from github import Github, GithubException
 
 
 repos = [
+    'alphagov/account-api',
+    'alphagov/asset_bom_removal-rails',
     'alphagov/asset-manager',
     'alphagov/authenticating-proxy',
     'alphagov/bouncer',
     'alphagov/bulk-merger',
     'alphagov/cache-clearing-service',
-    'alphagov/calculators',
-    'alphagov/calendars',
     'alphagov/collections',
     'alphagov/collections-publisher',
     'alphagov/contacts-admin',
@@ -20,46 +20,69 @@ repos = [
     'alphagov/content-publisher',
     'alphagov/content-store',
     'alphagov/content-tagger',
+    'alphagov/datagovuk-tech-docs',
     'alphagov/datagovuk_find',
     'alphagov/datagovuk_publish',
+    'alphagov/datagovuk_publish_queue_monitor',
     'alphagov/email-alert-api',
     'alphagov/email-alert-frontend',
+    'alphagov/email-alert-monitoring',
     'alphagov/email-alert-service',
     'alphagov/feedback',
     'alphagov/finder-frontend',
     'alphagov/frontend',
     'alphagov/gds-api-adapters',
+    'alphagov/gds-sso',
     'alphagov/government-frontend',
+    'alphagov/govspeak',
     'alphagov/govspeak-preview',
-    'alphagov/govuk-alert-tracker',
     'alphagov/govuk-app-deployment',
     'alphagov/govuk-aws',
+    'alphagov/govuk-browser-extension',
+    'alphagov/govuk-cdn-config',
     'alphagov/govuk-content-schemas',
     'alphagov/govuk-dependencies',
+    'alphagov/govuk-deploy-lag-badger',
     'alphagov/govuk-developer-docs',
+    'alphagov/govuk-display-screen',
     'alphagov/govuk-dns',
     'alphagov/govuk-docker',
+    'alphagov/govuk-pact-broker',
+    'alphagov/govuk-puppet',
+    'alphagov/govuk-schemas',
     'alphagov/govuk-secrets',
-    'alphagov/govuk_publishing_components',
     'alphagov/govuk-saas-config',
+    'alphagov/govuk-user-reviewer',
     'alphagov/govuk-zendesk-display-screen',
+    'alphagov/govuk_app_config',
+    'alphagov/govuk_document_types',
+    'alphagov/govuk_message_queue_consumer',
+    'alphagov/govuk_publishing_components',
+    'alphagov/govuk_sidekiq',
+    'alphagov/govuk_taxonomy_helpers',
     'alphagov/hmrc-manuals-api',
     'alphagov/imminence',
     'alphagov/info-frontend',
     'alphagov/licence-finder',
+    'alphagov/licensify',
     'alphagov/link-checker-api',
     'alphagov/local-links-manager',
+    'alphagov/locations-api',
     'alphagov/manuals-frontend',
     'alphagov/manuals-publisher',
     'alphagov/maslow',
+    'alphagov/optic14n',
+    'alphagov/plek',
     'alphagov/publisher',
     'alphagov/publishing-api',
     'alphagov/publishing-e2e-tests',
     'alphagov/release',
     'alphagov/router-api',
+    'alphagov/rubocop-govuk',
     'alphagov/seal',
     'alphagov/search-admin',
     'alphagov/search-api',
+    'alphagov/search-performance-explorer',
     'alphagov/service-manual-frontend',
     'alphagov/service-manual-publisher',
     'alphagov/short-url-manager',
@@ -73,7 +96,9 @@ repos = [
     'alphagov/static',
     'alphagov/support',
     'alphagov/support-api',
+    'alphagov/tech-docs-monitor',
     'alphagov/transition',
+    'alphagov/transition-config',
     'alphagov/travel-advice-publisher',
     'alphagov/whitehall',
 ]
@@ -112,18 +137,18 @@ class VersionUpgrader:
     def create_branch(self, repo):
         print('Creating branch')
 
-        master = repo.get_branch('master')
+        main_branch = repo.get_branch(repo.default_branch)
 
         try:
             ref = f'refs/heads/{self.branch_name}'
-            repo.create_git_ref(ref=ref, sha=master.commit.sha)
+            repo.create_git_ref(ref=ref, sha=main_branch.commit.sha)
         except GithubException:
             pass
 
     def upgrade_ruby_version(self, repo):
         print('Updating .ruby-version file')
 
-        filename = '/.ruby-version'
+        filename = '.ruby-version'
         message = f'Update .ruby-version to {self.new_version}'
         content = f'{self.new_version}\n'
         sha = repo.get_contents(filename).sha
@@ -133,7 +158,7 @@ class VersionUpgrader:
     def upgrade_dockerfile(self, repo):
         print('Updating Dockerfile')
 
-        filename = '/Dockerfile'
+        filename = 'Dockerfile'
 
         try:
             existing_file = repo.get_contents(filename)
@@ -155,7 +180,7 @@ class VersionUpgrader:
     def upgrade_gemfile_lock(self, repo):
         print('Updating Gemfile.lock')
 
-        filename = '/Gemfile.lock'
+        filename = 'Gemfile.lock'
 
         try:
             existing_file = repo.get_contents(filename)
@@ -188,9 +213,10 @@ class VersionUpgrader:
 
         title = f'Upgrade Ruby to {self.new_version}'
         body = f'''
-            Upgrade Ruby to {self.new_version}, see commits for more details.
+            Upgrades Ruby to {self.new_version}. See commits for more details.
+            This PR should be tested before merge, as per https://docs.publishing.service.gov.uk/manual/ruby.html#update-ruby-version-in-the-relevant-repos.
         '''.strip()
-        repo.create_pull(title, body, base='master', head=self.branch_name)
+        repo.create_pull(title, body, base=repo.default_branch, head=self.branch_name)
 
     def upgrade(self, repo_name):
         print('Upgrading', repo_name, 'to', self.new_version)
@@ -214,4 +240,9 @@ def upgrade(old_version, new_version):
 
 
 if __name__ == '__main__':
-    upgrade('2.6', '2.7.1p83')
+    upgrade('2.6.0', '2.6.9')
+    upgrade('2.6.1', '2.6.9')
+    upgrade('2.6.5', '2.6.9')
+    upgrade('2.6.6', '2.6.9')
+    upgrade('2.7.2', '2.7.5')
+    upgrade('2.7.3', '2.7.5')

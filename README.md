@@ -30,3 +30,4 @@ This will open pull requests in every repository you've configured it to:
 pipenv run python main.py
 ```
 
+You can see the created PRs by visiting <https://github.com/pulls>.

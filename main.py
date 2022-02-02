@@ -49,7 +49,6 @@ repos = [
     'alphagov/govuk-docker',
     'alphagov/govuk-pact-broker',
     'alphagov/govuk-puppet',
-    'alphagov/govuk-schemas',
     'alphagov/govuk-secrets',
     'alphagov/govuk-saas-config',
     'alphagov/govuk-user-reviewer',

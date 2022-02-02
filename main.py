@@ -95,7 +95,6 @@ repos = [
     'alphagov/static',
     'alphagov/support',
     'alphagov/support-api',
-    'alphagov/tech-docs-monitor',
     'alphagov/transition',
     'alphagov/transition-config',
     'alphagov/travel-advice-publisher',

@@ -1,5 +1,6 @@
 import base64
 import os
+import re
 
 from github import Github, GithubException
 
@@ -145,7 +146,12 @@ class VersionUpgrader:
             print('Already upgraded!')
             return False  # already upgraded
 
-        current_version_file = repo.get_contents('.ruby-version')
+        try:
+            current_version_file = repo.get_contents('.ruby-version')
+        except GithubException:
+            print('No .ruby-version file found')
+            return False
+
         current_version = base64.b64decode(current_version_file.content) \
             .decode('UTF-8').strip()
 
@@ -184,6 +190,7 @@ class VersionUpgrader:
         try:
             existing_file = repo.get_contents(filename)
         except GithubException:
+            print('No Dockerfile file found')
             return  # doesn't have a Dockerfile
 
         sha = existing_file.sha
@@ -191,7 +198,16 @@ class VersionUpgrader:
             .decode('UTF-8').strip()
 
         content = existing_content.split('\n')
-        content[0] = f'FROM ruby:{self.new_version}'
+        old = f'ruby:{self.old_version}'
+        new = f'ruby:{self.new_version}'
+
+        for line in content:
+            if re.search(old,line):
+                line = re.sub(old, new, line)
+                break
+        else:
+            return  # RUBY VERSION not in the Dockerfile
+
         content = '\n'.join(content) + '\n'
 
         message = f'Update Dockerfile to {self.new_version}'
@@ -206,7 +222,8 @@ class VersionUpgrader:
         try:
             existing_file = repo.get_contents(filename)
         except GithubException:
-            return  # doesn't have a Dockerfile
+            print('No Gemfile file found')
+            return  # doesn't have a Gemfile
 
         sha = existing_file.sha
         existing_content = base64.b64decode(existing_file.content) \
@@ -242,7 +259,11 @@ class VersionUpgrader:
     def upgrade(self, repo_name):
         print('Upgrading', repo_name, 'to', self.new_version)
 
-        repo = self.github.get_repo(repo_name)
+        try:
+            repo = self.github.get_repo(repo_name)
+        except GithubException as e:
+            print(e)
+            return
 
         if not self.can_repo_be_upgraded(repo):
             return

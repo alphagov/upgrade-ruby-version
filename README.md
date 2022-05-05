@@ -20,6 +20,12 @@ pipenv install
 
 ## Configure the script
 
+Get an updated list of repos:
+
+```
+curl https://docs.publishing.service.gov.uk/repos.json | jq -r ".[].app_name | \"'alphagov/\" + . + \"',\""
+```
+
 Set the [list of repos](https://github.com/alphagov/upgrade-ruby-version/blob/67c9b1285c9601bd6020206e57480d1a14c66f28/main.py#L7) and [configure which Ruby versions should be upgraded](https://github.com/alphagov/upgrade-ruby-version/blob/67c9b1285c9601bd6020206e57480d1a14c66f28/main.py#L216).
 
 ## Run the script

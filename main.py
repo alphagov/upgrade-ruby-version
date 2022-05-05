@@ -143,20 +143,20 @@ class VersionUpgrader:
         except GithubException:
             pass
         else:
-            print('Already upgraded!')
+            print('Already upgraded!', file=sys.stderr)
             return False  # already upgraded
 
         try:
             current_version_file = repo.get_contents('.ruby-version')
         except GithubException:
-            print('No .ruby-version file found')
+            print('No .ruby-version file found', file=sys.stderr)
             return False
 
         current_version = base64.b64decode(current_version_file.content) \
             .decode('UTF-8').strip()
 
         if not current_version.startswith(self.old_version):
-            print(f'Not running {self.old_version}!')
+            print(f'Not running {self.old_version}!', file=sys.stderr)
             return False
 
         return True
@@ -190,25 +190,20 @@ class VersionUpgrader:
         try:
             existing_file = repo.get_contents(filename)
         except GithubException:
-            print('No Dockerfile file found')
+            print('No Dockerfile file found', file=sys.stderr)
             return  # doesn't have a Dockerfile
 
         sha = existing_file.sha
         existing_content = base64.b64decode(existing_file.content) \
             .decode('UTF-8').strip()
 
-        content = existing_content.split('\n')
         old = f'ruby:{self.old_version}'
         new = f'ruby:{self.new_version}'
 
-        for line in content:
-            if re.search(old,line):
-                line = re.sub(old, new, line)
-                break
+        if re.search(old, existing_content):
+            content = re.sub(old, new, existing_content, count=1)
         else:
-            return  # RUBY VERSION not in the Dockerfile
-
-        content = '\n'.join(content) + '\n'
+            return # RUBY VERSION not in the Dockerfile
 
         message = f'Update Dockerfile to {self.new_version}'
 
@@ -222,7 +217,7 @@ class VersionUpgrader:
         try:
             existing_file = repo.get_contents(filename)
         except GithubException:
-            print('No Gemfile file found')
+            print('No Gemfile file found', file=sys.stderr)
             return  # doesn't have a Gemfile
 
         sha = existing_file.sha
@@ -262,7 +257,7 @@ class VersionUpgrader:
         try:
             repo = self.github.get_repo(repo_name)
         except GithubException as e:
-            print(e)
+            print(e, file=sys.stderr)
             return
 
         if not self.can_repo_be_upgraded(repo):

@@ -282,11 +282,5 @@ def upgrade(old_version, new_version):
 
 
 if __name__ == '__main__':
-    upgrade('2.6.0', '2.7.6')
-    upgrade('2.6.1', '2.7.6')
-    upgrade('2.6.5', '2.7.6')
-    upgrade('2.6.6', '2.7.6')
-    upgrade('2.7.2', '2.7.6')
-    upgrade('2.7.3', '2.7.6')
     upgrade('2.7.5', '2.7.6')
     upgrade('3.0.3', '3.0.4')

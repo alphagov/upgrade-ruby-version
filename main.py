@@ -162,5 +162,5 @@ def upgrade(old_version, new_version):
 
 
 if __name__ == '__main__':
-    upgrade('2.7.5', '2.7.6')
-    upgrade('3.0.3', '3.0.4')
+    upgrade('2.7.6', '3.1.2')
+    upgrade('3.0.4', '3.1.2')

@@ -17,6 +17,8 @@ GITHUB_ACCESS_TOKEN=personal_access_token
 
 You'll need to [create a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) with a `repo` [scope](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps) so that you have write access to GOV.UK repositories.
 
+> It's advised not to use your personal GitHub account to create the access token, as another developer will need to approve the PRs. You can use [govuk-ci GitHub account](https://github.com/govuk-ci).
+
 Install dependencies:
 
 ```

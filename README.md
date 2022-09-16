@@ -27,6 +27,14 @@ pipenv install
 
 [Configure which Ruby versions should be upgraded](https://github.com/alphagov/upgrade-ruby-version/blob/67c9b1285c9601bd6020206e57480d1a14c66f28/main.py#L216).
 
+When upgrading a specific list of repos (e.g. only those owned by your team), set up [the list of repos](https://github.com/alphagov/upgrade-ruby-version/blob/cf13233184bbda51550439b3d76b7af571a10121/main.py#L8-L11) with hardcoded values:
+```
+repos = [
+    'alphagov/authenticating-proxy',
+    'alphagov/bouncer',
+]
+```
+
 ## Run the script
 
 This will open pull requests in every repository you've configured it to:

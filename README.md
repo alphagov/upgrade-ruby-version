@@ -2,6 +2,11 @@
 
 A script to upgrade the version of Ruby used by a project.
 
+## Prerequisites
+
+- [pipenv](https://pipenv.pypa.io/en/latest/) (`brew install pipenv`)
+- [jq](https://stedolan.github.io/jq/) (`brew install jq`)
+
 ## Setup
 
 Create a `.env` file with the following contents:

@@ -15,7 +15,7 @@ Create a `.env` file with the following contents:
 GITHUB_ACCESS_TOKEN=personal_access_token
 ```
 
-You'll need to create a personal access token with a `repo` [scope](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps) so that you have write access to GOV.UK repositories.
+You'll need to [create a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) with a `repo` [scope](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps) so that you have write access to GOV.UK repositories.
 
 Install dependencies:
 
